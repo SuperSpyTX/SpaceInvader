@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 00:06:31 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 03:22:57 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 12:38:40 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 #include "Ncurse.hpp"
 #include <iostream>
 #include <ncurses.h>
+#include <iomanip>
 #include <string>
 #include "unistd.h"
+#include <ctime>
+#include <chrono>
 
-
-Ncurse::Ncurse(){
+Ncurse::Ncurse() : _time(clock()){
 	initscr();
 	noecho();
 	cbreak();
@@ -102,29 +104,37 @@ void	Ncurse::setGameEnv() {
 	WINDOW 		*gamewin = newwin(this->_row - 8, this->_col - 3, 5, 1);
 	WINDOW 		*score = newwin(5, this->_col - 3, 0, 1);
 	WINDOW		*control = newwin(3, this->_col - 3, this->_row - 3, 1);
+	int frames = 0;
 	refresh();
 	box(gamewin, 0, 0);
 	box(score, 0, 0);
 	box(control, 0, 0);
 	mvwprintw(control, 1, 20,
-	"CONTROLS:      [SPACEBAR]: Shoot      |      [KEY_ARROWS]: Movement     |     [X]: Exit     |     [Lives]:");
+	"CONTROLS:      [SPACEBAR]: Shoot      |      [KEY_ARROWS]: Movement     |     [Q]: Exit     |     [Lives]:");
 	timeout(0);
 	wrefresh(gamewin);
-	wrefresh(score);
 	wrefresh(control);
+	wrefresh(score);
 	int esc = 0;
 	keypad(gamewin, true);
 	nodelay(gamewin, true);
 	wrefresh(gamewin);
 	getch();
 	while (1) {
+		frames++;
+		mvwprintw(score, 1, 10, "TIME:%4d",((clock() - _time) / CLOCKS_PER_SEC));
+		wrefresh(score);
 		esc = wgetch(gamewin);
-		if (esc == 'x') {
+		if (esc == 'q') {
 			break;
 		}
-		// getmaxyx(stdscr, _row, _col);
 		wrefresh(gamewin);
-		usleep(30000);
+		if (clock()/ CLOCKS_PER_SEC != _time / CLOCKS_PER_SEC) {
+			mvwprintw(score, 1, 30, "FPS:%4d",frames);
+			wrefresh(score);
+			frames = 0;		
+		}
+		while (clock() / CLOCKS_PER_FRAME == _time / CLOCKS_PER_FRAME) {}
 	}
 }
 
