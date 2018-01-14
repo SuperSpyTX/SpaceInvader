@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 14:08:40 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/13 22:47:25 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 15:47:57 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,16 @@
 
 #include <iostream>
 #include <ncurses.h>
+#include "Entity.hpp"
 
-class	Player {
+class	Player : public virtual Entity {
 	private:
-		WINDOW		*_curwin;
 		int			_locX;
 		int			_locY;
-		int			_maxX;
-		int			_maxY;
-		char		_key;
+		int			_lives;
 		std::string _name;
 	public:
-		Player(WINDOW * win, int y, int x, char c);
+		Player(int y, int x);
 		Player(Player const &src);
 		~Player();
 
@@ -34,8 +32,7 @@ class	Player {
 		void		mvDown();
 		void		mvLeft();
 		void		mvRight();
-		int			getmv();
-		void		display();
+		// int			getmv(int move);
 		std::string	getName(void);
 
 

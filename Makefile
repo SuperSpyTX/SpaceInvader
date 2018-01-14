@@ -4,10 +4,10 @@ define colorecho
 	@tput sgr0
 endef
 
-NAME = SpaceInvaders
+NAME = ft_retro
 CC = clang++
 FLAGS = -Wall -Wextra -Werror -lncurses
-FILES = main.cpp Ncurse.class.cpp
+FILES = main.cpp Ncurse.class.cpp Player.class.cpp Entity.class.cpp
 
 
 
