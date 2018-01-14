@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 00:06:31 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 12:38:40 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 13:00:03 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@
 #include <ncurses.h>
 #include <iomanip>
 #include <string>
-#include "unistd.h"
 #include <ctime>
-#include <chrono>
 
 Ncurse::Ncurse() : _time(clock()){
 	initscr();
@@ -122,7 +120,7 @@ void	Ncurse::setGameEnv() {
 	getch();
 	while (1) {
 		frames++;
-		mvwprintw(score, 1, 10, "TIME:%4d",((clock() - _time) / CLOCKS_PER_SEC));
+		mvwprintw(score, 2, 10, "TIME:%4d",((clock() - _time) / CLOCKS_PER_SEC));
 		wrefresh(score);
 		esc = wgetch(gamewin);
 		if (esc == 'q') {
@@ -130,7 +128,7 @@ void	Ncurse::setGameEnv() {
 		}
 		wrefresh(gamewin);
 		if (clock()/ CLOCKS_PER_SEC != _time / CLOCKS_PER_SEC) {
-			mvwprintw(score, 1, 30, "FPS:%4d",frames);
+			mvwprintw(score, 2, 30, "FPS:%4d",frames);
 			wrefresh(score);
 			frames = 0;		
 		}
