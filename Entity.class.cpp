@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 23:21:51 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/13 23:50:50 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 13:32:25 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void		Entity::setpY(int i) {
 }
 
 void		Entity::setProjectile(char c) {
-	this->_projectile = c;	
+	this->_projectile = c;
 }
 
 char		Entity::getProjectile(void) {
@@ -49,11 +49,11 @@ int			Entity::getpY(void) {
 	return this->_pY;
 }
 
-void		doAction() virtual {
+void		Entity::doAction() {
 	
 }
 
-void		moveProjectile(int i) {
+void		Entity::moveProjectile(int i) {
 	
 }
 
