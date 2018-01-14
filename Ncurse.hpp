@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 00:06:30 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/13 22:43:37 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 00:45:16 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ class	Ncurse {
 	void	setRow(int i);
 	void	setCol(int i);
 	void	setWindow(WINDOW *name);
-	bool	setMenu();
-	void	setGameEnv();
+	bool	setMenu(void);
+	void	setGameEnv(void);
+	void	setcurseXY(void);
 
 	void	clearWindow();
 	// std::string getName(void); 
