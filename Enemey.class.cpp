@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 16:00:35 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 21:20:01 by jkrause          ###   ########.fr       */
+/*   Updated: 2018/01/14 22:51:28 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,11 @@ void		Enemey::tick(Tracker &tracker, WINDOW *win) {
 		return;
 	}*/
 	if (++this->_fireCurTick == this->_fireTick) {
-		tracker.createProjectile(this->getmaxY(), this->getmaxX(), _pY + 1, _pX, false);
+		tracker.createProjectile(this->getmaxY(), this->getmaxX(), _pY, _pX + 2, false);
 		this->_fireCurTick = 0;
 	}
 	this->_ticks++;
-	if (this->_ticks == 10000) {
+	if (this->_ticks == 7000) {
 		this->_ticks = 0;
 		this->moveProjectile(tracker, win, MOVE_DOWN);
 		if (_pY >= this->getmaxY() - 1)

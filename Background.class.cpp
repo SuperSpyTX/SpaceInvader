@@ -47,12 +47,12 @@ void			Background::tick(Tracker &tracker, WINDOW *win) {
 	(void)tracker;
 	if (this->_ticks_ == 5000) {
 		mvwaddch(win, _pX, _pY, ' ');
-		this->_pX += (rand() % 10);
+		this->_pX += 2;
 		if (this->_pY >= (getmaxY() - 1))
 			this->_pY -= 2;
 		if (this->_pX >= (getmaxX() - 1)) {
-			this->_pX = 2 + rand() % _locX;
-			this->_pY = 2 + rand() % _locY;
+			this->_pX = 1 + rand() % (getmaxX() - 1);
+			this->_pY = 1 + rand() % (getmaxY() - 1);
 		}
 		mvwaddch(win, _pX, _pY, this->_projectile);
 		this->_ticks_ = 0;

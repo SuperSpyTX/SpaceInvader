@@ -6,7 +6,7 @@
 /*   By: jkrause <jkrause@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 16:37:45 by jkrause           #+#    #+#             */
-/*   Updated: 2018/01/14 21:51:08 by jkrause          ###   ########.fr       */
+/*   Updated: 2018/01/14 22:54:26 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,12 @@ Tracker &Tracker::operator=(Tracker const &rhs) {
 	return *this;
 }
 
-Tracker::~Tracker(void) {}
+Tracker::~Tracker(void) {
+	for (int i = 0; i < MAX_ENTITIES; i++) {
+		if (this->_entities[i] != 0)
+			delete this->_entities[i];
+	}
+}
 
 void Tracker::addEntity(Entity *entity) {
 	for (int i = 0; i < this->_curCount + 1; i++) {
@@ -96,13 +101,14 @@ void Tracker::tickEntities(Tracker &tracker, WINDOW *win) {
 	this->_curEnemies = 0;
 	for (int i = 0; i < this->_curCount; i++) {
 		if (this->_entities[i] != 0) {
-			if (this->_entities[i]->getType() == 4)
-				this->_curEnemies++;
 			if (this->_entities[i]->getLives() == 0)
 			{
 				delete this->_entities[i];
 				this->_entities[i] = 0;
 				continue;
+			}
+			if (this->_entities[i]->getType() == 4) {
+				this->_curEnemies++;
 			}
 			this->_entities[i]->tick(tracker, win);
 		}

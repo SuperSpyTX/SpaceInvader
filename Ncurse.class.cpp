@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 00:06:31 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 21:51:37 by jkrause          ###   ########.fr       */
+/*   Updated: 2018/01/14 22:52:02 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ Ncurse::Ncurse() : _time(clock()){
 	timeout(0);
 	getmaxyx(stdscr, _row, _col);
 	WINDOW *gamewin = newwin(_row, _col, 0, 0);
+	_enemies = 20;
 	refresh();
 	mvwprintw(gamewin ,_row/2, (_col-std::strlen("SPACE INVADERS"))/2, "%s", "SPACEINVADERS");
 	wrefresh(gamewin);
@@ -115,6 +116,7 @@ void	Ncurse::setGameEnv() {
 	wrefresh(control);
 	wrefresh(score);
 	int esc = 0;
+	int scoretrack = 0;
 	keypad(gamewin, true);
 	nodelay(gamewin, true);
 	wrefresh(gamewin);
@@ -127,19 +129,21 @@ void	Ncurse::setGameEnv() {
 	//Enemey *enemey = new Enemey(this->_row - 8 - 1, this->_col - 3 - 1, 2, 2);
 	//tracker.addEntity(enemey);
 	//
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < _enemies; i++) {
 		tracker.createEnemey(this->_row - 8 - 1, this->_col - 3 - 1, 2 + rand() % ((this->_col - 3 - 1)), 2 + rand() % 10);
 	}
 
 	for (int i = 0; i < 20; i ++) {
-		tracker.createBg(this->_row - 8 - 1, this->_col - 3 - 1, 2 + rand() % ((this->_col - 3 - 1)), 2 + rand() % 10);
+		tracker.createBg(this->_row - 8 - 1, this->_col - 3 - 1, 2 + rand() % ((this->_col - 3 - 1)), 2 + rand() % ((this->_row - 8 - 1)));
 	}
 
 	mvwprintw(score, 2, 30, "LIVES: %d", player->getLives());
+	//mvwprintw(score, 2, 50, "ENEMIES: %d", tracker.getNumOfEnemeies());
 	wrefresh(score);
 
 	getch();
 	int		check = player->getLives();
+	int 	check2 = tracker.getNumOfEnemeies() + 1;
 	while (1) {
 		if (player->getLives() < 1) {
 			break;
@@ -164,11 +168,31 @@ void	Ncurse::setGameEnv() {
 		if (esc == 'q') {
 			break;
 		}
-		if (player->getLives() != check) {
+		if (player->getLives() != check || tracker.getNumOfEnemeies() != check2) {
 			mvwprintw(score, 2, 30, "LIVES: %d", player->getLives());
+			mvwprintw(score, 2, 50, "ENEMIES: %d", tracker.getNumOfEnemeies());
+			mvwprintw(score, 2, 70, "SCORE: %d", scoretrack);
+			bool wombo = false;
+			if (tracker.getNumOfEnemeies() < 10)
+				mvwaddch(score, 2, 60, ' ');
+			if (check2 > tracker.getNumOfEnemeies())
+			{
+				if ((check2 - tracker.getNumOfEnemeies()) > 1) {
+					wombo = true;
+					scoretrack += ((check2 - tracker.getNumOfEnemeies()) - 1) * 5;
+				}
+				scoretrack += (check2 - tracker.getNumOfEnemeies()) * 10;
+			}
+			if (wombo)
+				mvwprintw(score, 2, 90, "WOMBO COMBO!");
+			else
+				mvwprintw(score, 2, 90, "            ");
 			wrefresh(score);
 			check = player->getLives();
+			check2 = tracker.getNumOfEnemeies();
 		}
+		if (check2 == 0)
+			break;
 		// player.display();
 
 		//mvwprintw(score, 2, 30, "TICKEDENT: %d", tracker.entitiesTicked);
@@ -188,17 +212,22 @@ void	Ncurse::setGameEnv() {
 	delwin(score);
 	refresh();
 	// clear();
-	setGameOver();
+	setGameOver(check2 == 0);
 }
 
 
-void	Ncurse::setGameOver() {
+void	Ncurse::setGameOver(bool won) {
 	WINDOW *gameover = newwin(this->_row, this->_col, 0, 0);
 	refresh();
 	getch();
-	mvwprintw(gameover ,this->_row/2, (_col-std::strlen("GAMEOVER"))/2, "%s", "GAMEOVER");
+	if (won) {
+		mvwprintw(gameover, this->_row / 2, (_col-std::strlen("WINNER")) / 2, "%s", "WINNER");
+	} else {
+		mvwprintw(gameover ,this->_row / 2, (_col-std::strlen("LOSER")) / 2, "%s", "LOSER");
+	}
 	wrefresh(gameover);
 	if(setMenu()) {
+		_enemies += 5;
 		delwin(gameover);
 		setGameEnv();
 	}

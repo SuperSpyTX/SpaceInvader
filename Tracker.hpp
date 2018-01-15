@@ -18,7 +18,7 @@
 # include "Background.hpp"
 # include <ncurses.h>
 
-# define MAX_ENTITIES 5120
+# define MAX_ENTITIES 512
 
 class Tracker {
 	private:
