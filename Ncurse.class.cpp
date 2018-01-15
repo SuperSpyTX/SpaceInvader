@@ -183,6 +183,7 @@ void	Ncurse::setGameEnv() {
 				}
 				scoretrack += (check2 - tracker.getNumOfEnemeies()) * 10;
 			}
+			mvwprintw(score, 2, 70, "SCORE: %d", scoretrack);
 			if (wombo)
 				mvwprintw(score, 2, 90, "WOMBO COMBO!");
 			else
@@ -228,7 +229,7 @@ void	Ncurse::setGameOver(bool won) {
 	wrefresh(gameover);
 	if(setMenu()) {
 		if (won) {
-			//_enemies += 5;
+			_enemies += 5;
 		}
 		delwin(gameover);
 		setGameEnv();
