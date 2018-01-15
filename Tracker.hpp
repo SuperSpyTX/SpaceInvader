@@ -6,7 +6,7 @@
 /*   By: jkrause <jkrause@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 16:37:49 by jkrause           #+#    #+#             */
-/*   Updated: 2018/01/14 19:20:33 by jkrause          ###   ########.fr       */
+/*   Updated: 2018/01/14 21:34:50 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@ class Tracker {
 	private:
 		Entity *_entities[MAX_ENTITIES];
 		int _curCount;
+		int _curEnemies;
 	public:
 		Tracker(void);
 		Tracker(Tracker &src);
 		Tracker &operator=(Tracker const &rhs);
 		~Tracker(void);
 
-		int entitiesTicked;
+		int	getNumOfEnemeies(void);
 
 		void addEntity(Entity *entity);
 		void removeEntity(Entity *entity);

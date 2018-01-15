@@ -6,7 +6,7 @@
 /*   By: jkrause <jkrause@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 16:37:45 by jkrause           #+#    #+#             */
-/*   Updated: 2018/01/14 21:08:54 by jkrause          ###   ########.fr       */
+/*   Updated: 2018/01/14 21:51:08 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Tracker::Tracker(void) {
 		_entities[i] = 0;
 	}
 	this->_curCount = 0;
-	this->entitiesTicked = 0;
+	this->_curEnemies = 0;
 }
 
 Tracker::Tracker (Tracker &src) {
@@ -41,6 +41,8 @@ Tracker::~Tracker(void) {}
 void Tracker::addEntity(Entity *entity) {
 	for (int i = 0; i < this->_curCount + 1; i++) {
 		if (this->_entities[i] == 0) {
+			if (entity->getType() == 4)
+				this->_curEnemies++;
 			this->_entities[i] = entity;
 			this->_curCount++;
 			break;
@@ -73,6 +75,10 @@ void Tracker::createBg(int maxY, int maxX, int y, int x) {
 	this->addEntity(background);
 }
 
+int Tracker::getNumOfEnemeies(void) {
+	return this->_curEnemies;
+}
+
 Entity *Tracker::getEntity(int x, int y) {
 	for (int i = 0; i < this->_curCount; i++) {
 		if (this->_entities[i] != 0) {
@@ -87,10 +93,11 @@ Entity *Tracker::getEntity(int x, int y) {
 }
 
 void Tracker::tickEntities(Tracker &tracker, WINDOW *win) {
-	this->entitiesTicked = 0;
+	this->_curEnemies = 0;
 	for (int i = 0; i < this->_curCount; i++) {
 		if (this->_entities[i] != 0) {
-			this->entitiesTicked++;
+			if (this->_entities[i]->getType() == 4)
+				this->_curEnemies++;
 			if (this->_entities[i]->getLives() == 0)
 			{
 				delete this->_entities[i];
