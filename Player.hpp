@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 14:08:40 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 15:47:57 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 14:53:22 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,14 @@ class	Player : public virtual Entity {
 		void		mvDown();
 		void		mvLeft();
 		void		mvRight();
-		// int			getmv(int move);
+		int			getX();
+		int			getY();
+		int			getmv();
+		void		display();
 		std::string	getName(void);
 
 
-		Player	&operator=(Player const &rhs);	
+		Player	&operator=(Player const &rhs);
 };
 
 #endif

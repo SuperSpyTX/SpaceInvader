@@ -9,14 +9,11 @@ CC = clang++
 FLAGS = -Wall -Wextra -Werror -lncurses
 FILES = main.cpp Ncurse.class.cpp Player.class.cpp Entity.class.cpp
 
-
-
 all : $(NAME)
 
 $(NAME) :
 	@$(CC) $(FLAGS) $(FILES) -o $(NAME)
 	$(call colorecho,"Executable $(NAME) Created")
-
 
 clean :
 	@rm -rf $(NAME)

@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 14:08:44 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 15:48:18 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 15:59:11 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,21 @@ Player::~Player() {
 }
 
 void		Player::mvUp() {
-	_locY--;
+	_locY -= 1;
 	if (_locY < 1) {
 		_locY = 1;
 	}
 }
 
 void		Player::mvDown() {
-	_locY++;
+	_locY += 1;
 	if (_locY > getmaxY() - 1) {
 		_locY = getmaxY() - 1;
 	}
 }
 
 void		Player::mvLeft() {
-	_locX--;
+	_locX -= 1;
 	if (_locX < 1) {
 		_locX = 1;
 	}
@@ -51,6 +51,14 @@ void		Player::mvRight() {
 	if (_locX > getmaxX() - 1) {
 		_locX = getmaxX() - 1;
 	}
+}
+
+int			Player::getX() {
+	return _locX;
+}
+
+int			Player::getY() {
+	return _locY;
 }
 
 // int			Player::getmv(int move) {

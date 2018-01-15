@@ -6,12 +6,13 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 00:06:31 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 13:00:03 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 15:44:58 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "Ncurse.hpp"
+#include "Player.hpp"
 #include <iostream>
 #include <ncurses.h>
 #include <iomanip>
@@ -90,7 +91,7 @@ bool	Ncurse::setMenu() {
 				boom = false;
 				break;
 			}
-		}	
+		}
 	}
 	clear();
 	delwin(menu);
@@ -102,7 +103,7 @@ void	Ncurse::setGameEnv() {
 	WINDOW 		*gamewin = newwin(this->_row - 8, this->_col - 3, 5, 1);
 	WINDOW 		*score = newwin(5, this->_col - 3, 0, 1);
 	WINDOW		*control = newwin(3, this->_col - 3, this->_row - 3, 1);
-	int frames = 0;
+	//int frames = 0;
 	refresh();
 	box(gamewin, 0, 0);
 	box(score, 0, 0);
@@ -117,22 +118,40 @@ void	Ncurse::setGameEnv() {
 	keypad(gamewin, true);
 	nodelay(gamewin, true);
 	wrefresh(gamewin);
+	Player player(gamewin, 10, 10, this->_row - 8 - 1, this->_col - 3 - 1, 'g');
 	getch();
 	while (1) {
-		frames++;
-		mvwprintw(score, 2, 10, "TIME:%4d",((clock() - _time) / CLOCKS_PER_SEC));
-		wrefresh(score);
+		//start = clock();
+		//frames++;
+		//mvwprintw(score, 2, 10, "TIME:%4d",((clock() - _time) / 100000));
+		//wrefresh(score);
 		esc = wgetch(gamewin);
+		switch (esc) {
+		case KEY_UP:
+			player.mvUp();
+			break;
+		case KEY_DOWN:
+			player.mvDown();
+			break;
+		case KEY_LEFT:
+			player.mvLeft();
+			break;
+		case KEY_RIGHT:
+			player.mvRight();
+			break;
+		}
 		if (esc == 'q') {
 			break;
 		}
-		wrefresh(gamewin);
-		if (clock()/ CLOCKS_PER_SEC != _time / CLOCKS_PER_SEC) {
-			mvwprintw(score, 2, 30, "FPS:%4d",frames);
-			wrefresh(score);
-			frames = 0;		
-		}
-		while (clock() / CLOCKS_PER_FRAME == _time / CLOCKS_PER_FRAME) {}
+		player.display();
+		//wrefresh(gamewin);
+		//if (clock()/ 100000 != _time / 100000) {
+		//end = clock();
+		//	mvwprintw(score, 2, 30, "FPS:%4d", (end - start));
+		//	wrefresh(score);
+		//	frames = 0;
+		//}
+		//while (clock() / CLOCKS_PER_FRAME == _time / CLOCKS_PER_FRAME) {}
 	}
 }
 
@@ -151,7 +170,7 @@ void	Ncurse::setRow(int i) {
 }
 
 void	Ncurse::setCol(int i) {
-	this->_col = i; 
+	this->_col = i;
 }
 
 void	Ncurse::clearWindow() {
