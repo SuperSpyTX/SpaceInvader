@@ -6,10 +6,9 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 00:06:31 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 17:34:37 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 17:35:31 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "Ncurse.hpp"
 #include "Player.hpp"
@@ -110,7 +109,7 @@ void	Ncurse::setGameEnv() {
 	box(control, 0, 0);
 	mvwprintw(control, 1, 20,
 	"CONTROLS:      [SPACEBAR]: Shoot      |      [KEY_ARROWS]: Movement     |     [Q]: Exit     |");
-	mvwprintw(score, 2, 30, "LIVES %d", player.getLives());
+	mvwprintw(score, 2, 30, "LIVES: %d", player.getLives());
 	timeout(0);
 	wrefresh(gamewin);
 	wrefresh(control);
