@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 00:06:30 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 13:29:41 by jkrause          ###   ########.fr       */
+/*   Updated: 2018/01/14 16:36:55 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class	Ncurse {
 	void	setWindow(WINDOW *name);
 	bool	setMenu(void);
 	void	setGameEnv(void);
+	void	setGameOver(void);
 	void	setcurseXY(void);
 
 	void	clearWindow();

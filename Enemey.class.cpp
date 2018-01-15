@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 16:00:35 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 16:18:05 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 16:20:06 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		Enemey::getY(void) {
 	return this->_locY;
 }
 
-void		Player::mvDown() {
+void		Enemey::mvDown() {
 	_locY += 1;
 	if (_locY > getmaxY() - 1) {
 		_locY = getmaxY() - 1;

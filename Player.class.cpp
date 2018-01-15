@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 14:08:44 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 16:11:51 by jkrause          ###   ########.fr       */
+/*   Updated: 2018/01/14 16:50:58 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ int			Player::getY() {
 // 	return choice;
 // }
 
-void		Player::tick(WINDOW *win) {
-}
+// void		Player::tick(WINDOW *win) {
+// }
 
 std::string	Player::getName(void) {
 	return _name;
