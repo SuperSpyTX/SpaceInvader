@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tracker.class.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkrause <jkrause@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 16:37:45 by jkrause           #+#    #+#             */
-/*   Updated: 2018/01/14 22:54:26 by jkrause          ###   ########.fr       */
+/*   Updated: 2018/01/14 23:08:46 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void Tracker::tickEntities(Tracker &tracker, WINDOW *win) {
 	this->_curEnemies = 0;
 	for (int i = 0; i < this->_curCount; i++) {
 		if (this->_entities[i] != 0) {
-			if (this->_entities[i]->getLives() == 0)
+			if (this->_entities[i]->getLives() == 0 && i > 0)
 			{
 				delete this->_entities[i];
 				this->_entities[i] = 0;

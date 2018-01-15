@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 00:06:31 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 22:52:02 by jkrause          ###   ########.fr       */
+/*   Updated: 2018/01/14 23:14:40 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,9 @@ void	Ncurse::setGameOver(bool won) {
 	}
 	wrefresh(gameover);
 	if(setMenu()) {
-		_enemies += 5;
+		if (won) {
+			_enemies += 5;
+		}
 		delwin(gameover);
 		setGameEnv();
 	}
