@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 14:08:40 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 16:51:58 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 17:29:22 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ class	Player : public virtual Entity {
 		int			getX();
 		int			getY();
 		int			getmv();
+		int			getLives();
 		std::string	getName(void);
 
 		void		tick(WINDOW *win);

@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 00:06:31 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 17:11:13 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 17:34:37 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,15 @@ void	Ncurse::setGameEnv() {
 	WINDOW 		*gamewin = newwin(this->_row - 8, this->_col - 3, 5, 1);
 	WINDOW 		*score = newwin(5, this->_col - 3, 0, 1);
 	WINDOW		*control = newwin(3, this->_col - 3, this->_row - 3, 1);
+	Player player(this->_row - 8 - 1, this->_col - 3 - 1, 10, 10);
 	//int frames = 0;
 	refresh();
 	box(gamewin, 0, 0);
 	box(score, 0, 0);
 	box(control, 0, 0);
 	mvwprintw(control, 1, 20,
-	"CONTROLS:      [SPACEBAR]: Shoot      |      [KEY_ARROWS]: Movement     |     [Q]: Exit     |     [Lives]:");
+	"CONTROLS:      [SPACEBAR]: Shoot      |      [KEY_ARROWS]: Movement     |     [Q]: Exit     |");
+	mvwprintw(score, 2, 30, "LIVES %d", player.getLives());
 	timeout(0);
 	wrefresh(gamewin);
 	wrefresh(control);
@@ -117,8 +119,8 @@ void	Ncurse::setGameEnv() {
 	keypad(gamewin, true);
 	nodelay(gamewin, true);
 	wrefresh(gamewin);
-	Player player(this->_row - 8 - 1, this->_col - 3 - 1, 10, 10);
 	getch();
+	int		check = player.getLives();
 	while (1) {
 		//start = clock();
 		//frames++;
@@ -141,6 +143,11 @@ void	Ncurse::setGameEnv() {
 		}
 		if (esc == 'q') {
 			break;
+		}
+		if (player.getLives() != check) {
+			mvwprintw(score, 2, 30, "LIVES: %d", player.getLives());
+			wrefresh(score);
+			check = player.getLives();
 		}
 		// player.display();
 		//wrefresh(gamewin);

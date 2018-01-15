@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 14:08:44 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 16:50:58 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 17:29:53 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,10 @@ int			Player::getX() {
 
 int			Player::getY() {
 	return _locY;
+}
+
+int			Player::getLives() {
+	return this->_lives;
 }
 
 // int			Player::getmv(int move) {
