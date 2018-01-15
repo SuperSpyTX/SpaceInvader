@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 00:06:31 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 16:47:46 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 17:11:13 by evanheum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,17 @@ Ncurse::Ncurse() : _time(clock()){
 	cbreak();
 	timeout(0);
 	getmaxyx(stdscr, _row, _col);
-	WINDOW *gamewin = newwin(0, _col, _row, _col);
-	// mvwprintw(gamewin ,_row/2, (_col-std::strlen("SPACE INVADERS"))/2, "%s", "SPACEINVADERS");
+	WINDOW *gamewin = newwin(_row, _col, 0, 0);
 	refresh();
+	mvwprintw(gamewin ,_row/2, (_col-std::strlen("SPACE INVADERS"))/2, "%s", "SPACEINVADERS");
+	wrefresh(gamewin);
 	curs_set(0);
 	getch();
-	delwin(gamewin);
 	if (setMenu()) {
+		delwin(gamewin);
 		setGameEnv();
 	}
+	delwin(gamewin);
 }
 
 Ncurse::Ncurse(Ncurse const &src) {
@@ -140,7 +142,7 @@ void	Ncurse::setGameEnv() {
 		if (esc == 'q') {
 			break;
 		}
-		player.display();
+		// player.display();
 		//wrefresh(gamewin);
 		//if (clock()/ 100000 != _time / 100000) {
 		//end = clock();
@@ -154,16 +156,22 @@ void	Ncurse::setGameEnv() {
 	delwin(control);
 	delwin(score);
 	refresh();
+	// clear();
 	setGameOver();
 }
 
 
 void	Ncurse::setGameOver() {
-	WINDOW *gameover = newwin(0,0,0,0);
-	mvwprintw(gameover ,_row/2, (_col-std::strlen("GAMEOVER"))/2, "%s", "GAMEOVER");
+	WINDOW *gameover = newwin(this->_row, this->_col, 0, 0);
+	refresh();
+	getch();
+	mvwprintw(gameover ,this->_row/2, (_col-std::strlen("GAMEOVER"))/2, "%s", "GAMEOVER");
+	wrefresh(gameover);	
 	if(setMenu()) {
+		delwin(gameover);
 		setGameEnv();
 	}
+	delwin(gameover);
 	
 }
 
