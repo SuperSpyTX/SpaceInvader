@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 16:37:45 by jkrause           #+#    #+#             */
-/*   Updated: 2018/01/14 23:08:46 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 23:36:12 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,23 @@ void Tracker::removeEntity(Entity *entity) {
 }
 
 void Tracker::createProjectile(int maxY, int maxX, int y, int x, bool up) {
+	if (y >= maxX || x >= maxX || x < 1 || y < 1)
+		return;
 	Projectile *projectile = new Projectile(maxY, maxX, y, x, (up ? MOVE_UP : MOVE_DOWN));
 	projectile->setExplosive();
 	this->addEntity(projectile);
 }
 
 void Tracker::createEnemey(int maxY, int maxX, int y, int x) {
+	if (y >= maxX || x >= maxX || x < 1 || y < 1)
+		return;
 	Enemey *enemey = new Enemey(maxY, maxX, y, x);
 	this->addEntity(enemey);
 }
 
 void Tracker::createBg(int maxY, int maxX, int y, int x) {
+	if (y >= maxX || x >= maxX || x < 1 || y < 1)
+		return;
 	Background *background = new Background(maxY, maxX, y, x);
 	this->addEntity(background);
 }

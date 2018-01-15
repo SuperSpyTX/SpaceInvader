@@ -16,7 +16,7 @@
 
 
 int main(void) {
-	srand(time(NULL));
+	//srand(time(NULL));
 	Ncurse game;
 	return 0;
 }

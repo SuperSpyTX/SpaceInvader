@@ -133,9 +133,9 @@ void	Ncurse::setGameEnv() {
 		tracker.createEnemey(this->_row - 8 - 1, this->_col - 3 - 1, 2 + rand() % ((this->_col - 3 - 1)), 2 + rand() % 10);
 	}
 
-	/*for (int i = 0; i < 20; i ++) {
+	for (int i = 0; i < 20; i ++) {
 		tracker.createBg(this->_row - 8 - 1, this->_col - 3 - 1, 2 + rand() % ((this->_col - 3 - 1)), 2 + rand() % ((this->_row - 8 - 1)));
-	}*/
+	}
 
 	mvwprintw(score, 2, 30, "LIVES: %d", player->getLives());
 	//mvwprintw(score, 2, 50, "ENEMIES: %d", tracker.getNumOfEnemeies());
@@ -228,7 +228,7 @@ void	Ncurse::setGameOver(bool won) {
 	wrefresh(gameover);
 	if(setMenu()) {
 		if (won) {
-			_enemies += 5;
+			//_enemies += 5;
 		}
 		delwin(gameover);
 		setGameEnv();
