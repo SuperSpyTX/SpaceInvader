@@ -19,27 +19,20 @@
 
 class	Player : public virtual Entity {
 	private:
-		int			_locX;
-		int			_locY;
-		int			_lives;
+		int 		_ticks;
 		std::string _name;
 	public:
 		Player(int maxY, int maxX, int y, int x);
 		Player(Player const &src);
 		~Player();
 
-		void		mvUp();
-		void		mvDown();
-		void		mvLeft();
-		void		mvRight();
-		int			getX();
-		int			getY();
-		int			getmv();
-		int			getLives();
 		std::string	getName(void);
 
-		void		tick(WINDOW *win);
 
+		bool		readyToFire(void);
+		void		fire(void);
+		void		onCollision(Entity &entity);
+		void		tick(Tracker &tracker, WINDOW *win);
 
 		Player	&operator=(Player const &rhs);
 };

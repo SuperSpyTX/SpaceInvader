@@ -1,53 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Enemey.class.cpp                                   :+:      :+:    :+:   */
+/*   Projectile.class.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/14 16:00:35 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 21:20:01 by jkrause          ###   ########.fr       */
+/*   Updated: 2018/01/14 21:19:31 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Enemey.hpp"
+#include "Tracker.hpp"
+#include "Projectile.hpp"
 #include <ncurses.h>
 
-Enemey::Enemey(int maxY, int maxX, int y, int x) : Entity(maxX, maxY), _name("Enemey") {
+Projectile::Projectile(int maxY, int maxX, int y, int x, int move) : Entity(maxX, maxY), _name("Projectile") {
 	this->_pX = x;
 	this->_pY = y;
-	this->_type = 4;
-	this->_locX = x;
-	this->_locY = y;
-	this->_projectile = 'X';
+	this->_projectile = '|';
 	this->_ticks = 0;
-	this->_fireCurTick = 0;
-	this->_fireTick = 25000 + (rand() % 500000);
+	this->_type = 3;
+	this->_explosive = false;
+	this->_move = move;
 }
 
-Enemey::Enemey(Enemey const &src) {
+Projectile::Projectile(Projectile const &src) {
 	*this = src;
 }
 
-Enemey::~Enemey() {
+Projectile::~Projectile() {
 
 }
 
-int		Enemey::getX(void) {
+int		Projectile::getX(void) {
 	return this->_locX;
 }
 
-int		Enemey::getY(void) {
+int		Projectile::getY(void) {
 	return this->_locY;
 }
 
-void		Enemey::onCollision(Entity &entity) {
-	// Eat my dust.
+void		Projectile::setExplosive(void) {
+	this->_explosive = true;
+}
+
+void		Projectile::onCollision(Entity &entity) {
 	(void)entity;
+	if (entity.getType() == this->_type)
+		return;
 	this->_lives = -1;
 }
 
-void		Enemey::tick(Tracker &tracker, WINDOW *win) {
+void		Projectile::tick(Tracker &tracker, WINDOW *win) {
 	if (this->_lives == 0)
 		return;
 	if (this->_lives == -2)
@@ -74,6 +78,7 @@ void		Enemey::tick(Tracker &tracker, WINDOW *win) {
 		mvwaddch(win, _pX, _pY, ' ');
 		if (_pX < 2)
 			_pX++;
+		if (this->_explosive) {
 			this->checkCollision(tracker, win, _pX - 1, _pY - 1);
 			this->checkCollision(tracker, win, _pX + 1, _pY - 1);
 			this->checkCollision(tracker, win, _pX - 1, _pY + 1);
@@ -82,6 +87,7 @@ void		Enemey::tick(Tracker &tracker, WINDOW *win) {
 			this->checkCollision(tracker, win, _pX + 1, _pY);
 			this->checkCollision(tracker, win, _pX - 1, _pY);
 			this->checkCollision(tracker, win, _pX, _pY - 1);
+		}
 		mvwaddch(win, _pX - 1, _pY - 1, '*');
 		mvwaddch(win, _pX + 1, _pY - 1, '*');
 		mvwaddch(win, _pX - 1, _pY + 1, '*');
@@ -93,32 +99,20 @@ void		Enemey::tick(Tracker &tracker, WINDOW *win) {
 		this->_lives--;
 		return;
 	}
-
-	/*if (this->_lives == -1) {
-		mvwaddch(win, _pX, _pY, ' ');
-		this->_lives = 0;
-		return;
-	}*/
-	if (++this->_fireCurTick == this->_fireTick) {
-		tracker.createProjectile(this->getmaxY(), this->getmaxX(), _pY + 1, _pX, false);
-		this->_fireCurTick = 0;
-	}
 	this->_ticks++;
-	if (this->_ticks == 10000) {
+	if (this->_ticks == 5000) {
 		this->_ticks = 0;
-		this->moveProjectile(tracker, win, MOVE_DOWN);
-		if (_pY >= this->getmaxY() - 1)
-			_pY--;
-		if (_pX >= this->getmaxX() - 1) {
-			this->_pX = 2 + rand() % _locX;
-			this->_pY = 2 + rand() % _locY;
+		this->moveProjectile(tracker, win, this->_move);
+		if (_pX < 2 || _pX >= (this->getmaxY() - 1)) {
+			this->_lives = 0;
+			mvwaddch(win, _pX, _pY, ' ');
 			return;
 		}
 	}
 	mvwaddch(win, _pX, _pY, _projectile);
 }
 
-Enemey &Enemey::operator=(Enemey const &rhs) {
+Projectile &Projectile::operator=(Projectile const &rhs) {
 	if (this != &rhs) {
 		this->_locY = rhs._locY;
 		this->_locX = rhs._locX;

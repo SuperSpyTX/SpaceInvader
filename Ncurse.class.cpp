@@ -6,14 +6,17 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 00:06:31 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 17:35:31 by evanheum         ###   ########.fr       */
+/*   Updated: 2018/01/14 21:25:25 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Ncurse.hpp"
 #include "Player.hpp"
+#include "Enemey.hpp"
+#include "Tracker.hpp"
 #include <iostream>
 #include <ncurses.h>
+#include <unistd.h>
 #include <iomanip>
 #include <string>
 #include <ctime>
@@ -55,7 +58,6 @@ bool	Ncurse::setMenu() {
 	wborder(menu, '-', '-', '-','-','-','-','-','-');
 	keypad(menu, true);
 	wrefresh(menu);
-
 	while (1) {
 		for (int i = 0; i < 2; i++) {
 			if ( i == highlight)
@@ -101,7 +103,6 @@ void	Ncurse::setGameEnv() {
 	WINDOW 		*gamewin = newwin(this->_row - 8, this->_col - 3, 5, 1);
 	WINDOW 		*score = newwin(5, this->_col - 3, 0, 1);
 	WINDOW		*control = newwin(3, this->_col - 3, this->_row - 3, 1);
-	Player player(this->_row - 8 - 1, this->_col - 3 - 1, 10, 10);
 	//int frames = 0;
 	refresh();
 	box(gamewin, 0, 0);
@@ -109,7 +110,6 @@ void	Ncurse::setGameEnv() {
 	box(control, 0, 0);
 	mvwprintw(control, 1, 20,
 	"CONTROLS:      [SPACEBAR]: Shoot      |      [KEY_ARROWS]: Movement     |     [Q]: Exit     |");
-	mvwprintw(score, 2, 30, "LIVES: %d", player.getLives());
 	timeout(0);
 	wrefresh(gamewin);
 	wrefresh(control);
@@ -118,37 +118,62 @@ void	Ncurse::setGameEnv() {
 	keypad(gamewin, true);
 	nodelay(gamewin, true);
 	wrefresh(gamewin);
+	// Create entity tracker pls.
+	Tracker tracker;
+
+	Player *player = new Player(this->_row - 8 - 1, this->_col - 3 - 1, ((this->_col - 3 - 1) / 2), (this->_row - 8 - 1) - 2);
+	tracker.addEntity(player);
+
+	//Enemey *enemey = new Enemey(this->_row - 8 - 1, this->_col - 3 - 1, 2, 2);
+	//tracker.addEntity(enemey);
+	//
+	for (int i = 0; i < 20; i++) {
+		tracker.createEnemey(this->_row - 8 - 1, this->_col - 3 - 1, 2 + rand() % ((this->_col - 3 - 1)), 2 + rand() % 10);
+	}
+
+	for (int i = 0; i < 20; i ++) {
+		tracker.createBg(this->_row - 8 - 1, this->_col - 3 - 1, 2 + rand() % ((this->_col - 3 - 1)), 2 + rand() % 10);
+	}
+
+	mvwprintw(score, 2, 30, "LIVES: %d", player->getLives());
+	wrefresh(score);
+
 	getch();
-	int		check = player.getLives();
+	int		check = player->getLives();
 	while (1) {
+		if (player->getLives() < 1) {
+			break;
+		}
 		//start = clock();
 		//frames++;
-		//mvwprintw(score, 2, 10, "TIME:%4d",((clock() - _time) / 100000));
-		//wrefresh(score);
 		esc = wgetch(gamewin);
 		switch (esc) {
-		case KEY_UP:
-			player.mvUp();
-			break;
-		case KEY_DOWN:
-			player.mvDown();
-			break;
-		case KEY_LEFT:
-			player.mvLeft();
-			break;
-		case KEY_RIGHT:
-			player.mvRight();
-			break;
+			case KEY_LEFT:
+				player->moveProjectile(tracker, gamewin, MOVE_LEFT);
+				break;
+			case KEY_RIGHT:
+				player->moveProjectile(tracker, gamewin, MOVE_RIGHT);
+				break;
+			case ' ':
+				if (player->readyToFire()) {
+					player->fire();
+					tracker.createProjectile(this->_row - 8 - 1, this->_col - 3 - 1, player->getpY(), player->getpX() - 1, true);
+				}
+				break;
 		}
 		if (esc == 'q') {
 			break;
 		}
-		if (player.getLives() != check) {
-			mvwprintw(score, 2, 30, "LIVES: %d", player.getLives());
+		if (player->getLives() != check) {
+			mvwprintw(score, 2, 30, "LIVES: %d", player->getLives());
 			wrefresh(score);
-			check = player.getLives();
+			check = player->getLives();
 		}
 		// player.display();
+
+		//mvwprintw(score, 2, 30, "TICKEDENT: %d", tracker.entitiesTicked);
+		//wrefresh(score);
+		tracker.tickEntities(tracker, gamewin);
 		//wrefresh(gamewin);
 		//if (clock()/ 100000 != _time / 100000) {
 		//end = clock();
@@ -172,13 +197,12 @@ void	Ncurse::setGameOver() {
 	refresh();
 	getch();
 	mvwprintw(gameover ,this->_row/2, (_col-std::strlen("GAMEOVER"))/2, "%s", "GAMEOVER");
-	wrefresh(gameover);	
+	wrefresh(gameover);
 	if(setMenu()) {
 		delwin(gameover);
 		setGameEnv();
 	}
 	delwin(gameover);
-	
 }
 
 void	Ncurse::setcurseXY() {

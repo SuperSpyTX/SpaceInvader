@@ -7,7 +7,7 @@ endef
 NAME = ft_retro
 CC = clang++
 FLAGS = -Wall -Wextra -Werror -lncurses
-FILES = main.cpp Ncurse.class.cpp Player.class.cpp Entity.class.cpp
+FILES = main.cpp Ncurse.class.cpp Player.class.cpp Enemey.class.cpp Projectile.class.cpp Entity.class.cpp Tracker.class.cpp Background.class.cpp
 
 all : $(NAME)
 
