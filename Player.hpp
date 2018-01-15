@@ -6,7 +6,7 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 14:08:40 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 14:53:22 by jkrause          ###   ########.fr       */
+/*   Updated: 2018/01/14 16:09:14 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class	Player : public virtual Entity {
 		int			_lives;
 		std::string _name;
 	public:
-		Player(int y, int x);
+		Player(int maxY, int maxX, int y, int x);
 		Player(Player const &src);
 		~Player();
 
@@ -35,8 +35,9 @@ class	Player : public virtual Entity {
 		int			getX();
 		int			getY();
 		int			getmv();
-		void		display();
 		std::string	getName(void);
+
+		void		tick(WINDOW *win);
 
 
 		Player	&operator=(Player const &rhs);

@@ -6,15 +6,16 @@
 /*   By: evanheum <evanheum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 14:08:44 by evanheum          #+#    #+#             */
-/*   Updated: 2018/01/14 15:59:11 by jkrause          ###   ########.fr       */
+/*   Updated: 2018/01/14 16:11:51 by jkrause          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Player.hpp"
 #include "Entity.hpp"
 
-Player::Player(int y, int x) : Entity(), _locX(x), _locY(y), _lives(3), _name("Spaceship_X") {
+Player::Player(int maxY, int maxX, int y, int x) : Entity(maxX, maxY), _locX(x), _locY(y), _lives(3), _name("Spaceship_X") {
 	(void)this->_lives;
+	this->_projectile = 'g';
 }
 
 Player::Player(Player const &src) {
@@ -82,12 +83,19 @@ int			Player::getY() {
 // 	return choice;
 // }
 
+void		Player::tick(WINDOW *win) {
+}
+
 std::string	Player::getName(void) {
 	return _name;
 }
 
 Player	&Player::operator=(Player const &rhs) {
 	if (this != &rhs) {
+		this->_locX = rhs._locX;
+		this->_locY = rhs._locY;
+		this->_lives = rhs._lives;
+		this->_name = rhs._name;
 	}
 	return *this;
 }
