@@ -115,7 +115,7 @@ void	Ncurse::setGameEnv() {
 	keypad(gamewin, true);
 	nodelay(gamewin, true);
 	wrefresh(gamewin);
-	Player player(gamewin, 10, 10, this->_row - 8 - 1, this->_col - 3 - 1, 'g');
+	Player player(this->_row - 8 - 1, this->_col - 3 - 1, 10, 10);
 	getch();
 	while (1) {
 		//start = clock();
